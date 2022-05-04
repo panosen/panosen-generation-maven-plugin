@@ -5,7 +5,7 @@
 
     <groupId>com.panosen.plugins</groupId>
     <artifactId>panosen-generation-maven-plugin</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <packaging>maven-plugin</packaging>
 
     <parent>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>com.panosen</groupId>
             <artifactId>panosen-dbschema</artifactId>
-            <version>0.3.2</version>
+            <version>0.3.3</version>
         </dependency>
 
         <dependency>
