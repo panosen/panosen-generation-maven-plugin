@@ -2,11 +2,10 @@ package com.panosen;
 
 import com.panosen.dbschema.information_schema.Column;
 import com.panosen.dbschema.information_schema.Statistics;
-import com.panosen.dbschema.information_schema.Table;
 
 import java.util.List;
 
-public class EntityRequest {
+public class EntityFieldsRequest {
 
     private String packageName;
 

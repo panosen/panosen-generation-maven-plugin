@@ -10,6 +10,8 @@ public class Database {
 
     private String password;
 
+    private String tablePrefix;
+
     public String getName() {
         return name;
     }
@@ -40,5 +42,13 @@ public class Database {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getTablePrefix() {
+        return tablePrefix;
+    }
+
+    public void setTablePrefix(String tablePrefix) {
+        this.tablePrefix = tablePrefix;
     }
 }

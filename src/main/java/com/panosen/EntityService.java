@@ -1,18 +1,17 @@
 package com.panosen;
 
-import com.panosen.codedom.java.*;
+import com.panosen.codedom.java.AccessModifiers;
+import com.panosen.codedom.java.CodeClass;
+import com.panosen.codedom.java.CodeFile;
+import com.panosen.codedom.java.CodeProperty;
 import com.panosen.codedom.java.engine.JavaTypeConstant;
 import com.panosen.dbschema.information_schema.Column;
-import com.panosen.dbschema.information_schema.Table;
 
 public class EntityService {
 
     public String generate(EntityRequest request) {
 
-        Table table = request.getTable();
-
-        String tableNameUpperCamelCase = NameExtension.toUpperCamelCase(table.getTableName());
-        String tableEntity = tableNameUpperCamelCase + "Entity";
+        String tableEntity = request.getTableNameUpperCamelCase() + "Entity";
 
         CodeFile codeFile = new CodeFile();
         codeFile.setPackageName(request.getPackageName());
@@ -28,9 +27,9 @@ public class EntityService {
 
             codeClass.addAttribute("Entity");
             codeClass.addAttribute("DataSource")
-                    .AddStringParam("name", request.getDatabaseName());
+                    .addStringParam("name", request.getDatabaseName());
             codeClass.addAttribute("Table")
-                    .AddStringParam("name", table.getTableName());
+                    .addStringParam("name", request.getTableRealName());
 
             if (request.getTableColumnList() != null && !request.getTableColumnList().isEmpty()) {
                 for (Column column : request.getTableColumnList()) {
@@ -44,9 +43,9 @@ public class EntityService {
                     }
 
                     codeProperty.addAttribute("Column")
-                            .AddStringParam("name", column.getColumnName());
+                            .addStringParam("name", column.getColumnName());
                     codeProperty.addAttribute("Type")
-                            .AddPlainParam("type", buildType(column.getDataType()));
+                            .addPlainParam("type", buildType(column.getDataType()));
                 }
             }
         }

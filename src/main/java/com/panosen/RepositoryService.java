@@ -10,11 +10,8 @@ public class RepositoryService {
 
     public String generate(RepositoryRequest request) {
 
-        Table table = request.getTable();
-
-        String tableNameUpperCamelCase = NameExtension.toUpperCamelCase(table.getTableName());
-        String tableRepository = tableNameUpperCamelCase + "Repository";
-        String tableEntity = tableNameUpperCamelCase + "Entity";
+        String tableRepository = request.getTableNameUpperCamelCase() + "Repository";
+        String tableEntity = request.getTableNameUpperCamelCase() + "Entity";
 
         CodeFile codeFile = new CodeFile();
         codeFile.setPackageName(request.getPackageName());

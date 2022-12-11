@@ -1,5 +1,6 @@
 package com.panosen;
 
+import com.google.common.base.Strings;
 import com.panosen.dbschema.SchemaRepository;
 import com.panosen.dbschema.information_schema.Column;
 import com.panosen.dbschema.information_schema.Statistics;
@@ -32,6 +33,7 @@ public class GenerateOrmMojo extends AbstractMojo {
 
     private final RepositoryService repositoryService = new RepositoryService();
     private final EntityService entityService = new EntityService();
+    private final EntityFieldsService entityFieldsService = new EntityFieldsService();
 
     @Parameter(defaultValue = "${project.build.sourceDirectory}", required = true, readonly = true)
     private File sourceDirectory;
@@ -55,17 +57,12 @@ public class GenerateOrmMojo extends AbstractMojo {
         getLog().info("sourceDirectory = " + sourceDirectory.getAbsolutePath());
 
         String prefix = Paths.get("", this.packageName.split("\\.")).toString();
-        getLog().info(prefix);
+        getLog().info("prefix = " + prefix);
 
         Pack pack = new Pack();
         for (Database database : databases) {
-            String dbPackageName = this.packageName;
-            String dbPath = prefix;
-            if (this.databases.size() > 1) {
-                dbPackageName = this.packageName + "." + database.getName();
-                dbPath = Paths.get(prefix, database.getName()).toString();
-            }
-
+            String dbPackageName = this.packageName + "." + database.getName();
+            String dbPath = Paths.get(prefix, database.getName()).toString();
             handleDatabase(pack, dbPackageName, dbPath, database);
         }
 
@@ -84,15 +81,23 @@ public class GenerateOrmMojo extends AbstractMojo {
 
         for (Table table : tableList) {
 
+            String tableName = table.getTableName();
+            String tableRealName = table.getTableName();
+            if (!Strings.isNullOrEmpty(database.getTablePrefix()) && tableName.startsWith(database.getTablePrefix())) {
+                tableName = tableName.substring(database.getTablePrefix().length());
+            }
+
+            String tableNameUpperCamelCase = NameExtension.toUpperCamelCase(tableName);
+
             // repository/StudentRepository.java
             {
-                String tableNameUpperCamelCase = NameExtension.toUpperCamelCase(table.getTableName());
-
                 String path = Paths.get(dbPath, tableNameUpperCamelCase + "Repository.java").toString();
 
                 RepositoryRequest repositoryRequest = new RepositoryRequest();
                 repositoryRequest.setPackageName(dbPackageName);
-                repositoryRequest.setTable(table);
+                repositoryRequest.setTableName(tableName);
+                repositoryRequest.setTableRealName(tableRealName);
+                repositoryRequest.setTableNameUpperCamelCase(tableNameUpperCamelCase);
 
                 String content = repositoryService.generate(repositoryRequest);
 
@@ -101,8 +106,6 @@ public class GenerateOrmMojo extends AbstractMojo {
 
             // repositoryentity/StudentEntity.java
             {
-                String tableNameUpperCamelCase = NameExtension.toUpperCamelCase(table.getTableName());
-
                 String path = Paths.get(dbPath, "entity", tableNameUpperCamelCase + "Entity.java").toString();
 
                 List<Column> tableColumnList = columnList.stream()
@@ -115,11 +118,38 @@ public class GenerateOrmMojo extends AbstractMojo {
                 EntityRequest entityRequest = new EntityRequest();
                 entityRequest.setPackageName(entityPackageName);
                 entityRequest.setDatabaseName(database.getName());
-                entityRequest.setTable(table);
+                entityRequest.setTableName(tableName);
+                entityRequest.setTableRealName(tableRealName);
+                entityRequest.setTableNameUpperCamelCase(tableNameUpperCamelCase);
                 entityRequest.setTableColumnList(tableColumnList);
                 entityRequest.setTableStatisticsList(tableStatisticsList);
 
                 String content = entityService.generate(entityRequest);
+
+                pack.add(path, content);
+            }
+
+            // repositoryentity/StudentFields.java
+            {
+                String path = Paths.get(dbPath, "entity", tableNameUpperCamelCase + "Fields.java").toString();
+
+                List<Column> tableColumnList = columnList.stream()
+                        .filter(v -> v.getTableName().equals(table.getTableName()))
+                        .collect(Collectors.toList());
+                List<Statistics> tableStatisticsList = statisticsList.stream()
+                        .filter(v -> v.getTableName().equals(table.getTableName()))
+                        .collect(Collectors.toList());
+
+                EntityFieldsRequest entityFieldsRequest = new EntityFieldsRequest();
+                entityFieldsRequest.setPackageName(entityPackageName);
+                entityFieldsRequest.setDatabaseName(database.getName());
+                entityFieldsRequest.setTableName(tableName);
+                entityFieldsRequest.setTableRealName(tableRealName);
+                entityFieldsRequest.setTableNameUpperCamelCase(tableNameUpperCamelCase);
+                entityFieldsRequest.setTableColumnList(tableColumnList);
+                entityFieldsRequest.setTableStatisticsList(tableStatisticsList);
+
+                String content = entityFieldsService.generate(entityFieldsRequest);
 
                 pack.add(path, content);
             }

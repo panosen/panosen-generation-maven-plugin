@@ -1,12 +1,14 @@
 package com.panosen;
 
-import com.panosen.dbschema.information_schema.Table;
-
 public class RepositoryRequest {
 
     private String packageName;
 
-    private Table table;
+    private String tableName;
+
+    private String tableRealName;
+
+    private String tableNameUpperCamelCase;
 
     public String getPackageName() {
         return packageName;
@@ -16,11 +18,27 @@ public class RepositoryRequest {
         this.packageName = packageName;
     }
 
-    public Table getTable() {
-        return table;
+    public String getTableName() {
+        return tableName;
     }
 
-    public void setTable(Table table) {
-        this.table = table;
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public String getTableRealName() {
+        return tableRealName;
+    }
+
+    public void setTableRealName(String tableRealName) {
+        this.tableRealName = tableRealName;
+    }
+
+    public String getTableNameUpperCamelCase() {
+        return tableNameUpperCamelCase;
+    }
+
+    public void setTableNameUpperCamelCase(String tableNameUpperCamelCase) {
+        this.tableNameUpperCamelCase = tableNameUpperCamelCase;
     }
 }
