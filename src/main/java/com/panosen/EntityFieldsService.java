@@ -25,6 +25,7 @@ public class EntityFieldsService {
                     codeField.setAccessModifiers(AccessModifiers.Public);
                     codeField.setIsStatic(true);
                     codeField.setIsFinal(true);
+                    codeField.setSummary(column.getColumnComment() );
                     codeField.addStringValue(column.getColumnName());
                 }
             }

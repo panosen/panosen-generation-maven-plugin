@@ -17,10 +17,8 @@ import org.apache.tomcat.jdbc.pool.DataSourceFactory;
 import org.apache.tomcat.jdbc.pool.PoolConfiguration;
 
 import javax.sql.DataSource;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
@@ -209,7 +207,7 @@ public class GenerateOrmMojo extends AbstractMojo {
             }
         }
 
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(file, false))) {
+        try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8)) {
             out.write(content);
         }
     }
