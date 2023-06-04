@@ -16,10 +16,10 @@ public class RepositoryService {
         CodeFile codeFile = new CodeFile();
         codeFile.setPackageName(request.getPackageName());
 
-        codeFile.addSystemImport("java.io.IOException");
-        codeFile.addMavenImport("com.panosen.orm.DalTableDao");
-        codeFile.addMavenImport("org.springframework.stereotype.Component");
-        codeFile.addProjectImport(request.getPackageName() + ".entity." + tableEntity);
+        codeFile.addImport("java.io.IOException");
+        codeFile.addImport("com.panosen.orm.DalTableDao");
+        codeFile.addImport("org.springframework.stereotype.Component");
+        codeFile.addImport(request.getPackageName() + ".entity." + tableEntity);
 
         CodeClass codeClass = codeFile.addClass(tableRepository);
         codeClass.setAccessModifiers(AccessModifiers.Public);

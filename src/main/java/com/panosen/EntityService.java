@@ -16,10 +16,11 @@ public class EntityService {
         CodeFile codeFile = new CodeFile();
         codeFile.setPackageName(request.getPackageName());
 
-        codeFile.addSystemImport("java.sql.Timestamp");
-        codeFile.addSystemImport("java.sql.Types");
+        codeFile.addImport("java.sql.Timestamp");
+        codeFile.addImport("java.sql.Types");
+        codeFile.addImport("java.math.BigDecimal");
 
-        codeFile.addMavenImport("com.panosen.orm.annonation.*");
+        codeFile.addImport("com.panosen.orm.annonation.*");
 
         {
             CodeClass codeClass = codeFile.addClass(tableEntity);
@@ -66,6 +67,8 @@ public class EntityService {
                 return "Timestamp";
             case "mediumtext":
                 return JavaTypeConstant.STRING;
+            case "decimal":
+                return "BigDecimal";
             default:
                 return "error";
         }
@@ -83,6 +86,8 @@ public class EntityService {
                 return "Types.TIMESTAMP";
             case "mediumtext":
                 return "Types.VARCHAR";
+            case "decimal":
+                return "Types.DECIMAL";
             default:
                 return "";
         }
