@@ -69,6 +69,8 @@ public class EntityService {
                 return JavaTypeConstant.STRING;
             case "decimal":
                 return "BigDecimal";
+            case "bit":
+                return JavaTypeConstant._BOOLEAN;
             default:
                 return "error";
         }
@@ -88,6 +90,8 @@ public class EntityService {
                 return "Types.VARCHAR";
             case "decimal":
                 return "Types.DECIMAL";
+            case "bit":
+                return "Types.BIT";
             default:
                 return "";
         }
