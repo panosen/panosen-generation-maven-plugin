@@ -4,6 +4,7 @@ import com.panosen.codedom.java.AccessModifiers;
 import com.panosen.codedom.java.CodeClass;
 import com.panosen.codedom.java.CodeFile;
 import com.panosen.codedom.java.CodeProperty;
+import com.panosen.codedom.java.engine.GenerateOptions;
 import com.panosen.codedom.java.engine.JavaTypeConstant;
 import com.panosen.dbschema.information_schema.Column;
 
@@ -52,7 +53,9 @@ public class EntityService {
             }
         }
 
-        return codeFile.transformText();
+        GenerateOptions generateOptions = new GenerateOptions();
+        generateOptions.setConcision(request.isConcision());
+        return codeFile.transformText(generateOptions);
     }
 
     private String buildPropertyType(String dataType) {

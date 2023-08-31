@@ -22,6 +22,8 @@ public class EntityRequest {
 
     private List<Statistics> tableStatisticsList;
 
+    private boolean concision;
+
     public String getPackageName() {
         return packageName;
     }
@@ -76,5 +78,13 @@ public class EntityRequest {
 
     public void setTableNameUpperCamelCase(String tableNameUpperCamelCase) {
         this.tableNameUpperCamelCase = tableNameUpperCamelCase;
+    }
+
+    public boolean isConcision() {
+        return concision;
+    }
+
+    public void setConcision(boolean concision) {
+        this.concision = concision;
     }
 }

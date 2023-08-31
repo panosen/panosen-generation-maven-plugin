@@ -39,6 +39,9 @@ public class GenerateOrmMojo extends AbstractMojo {
     @Parameter(required = true, readonly = true)
     private String packageName;
 
+    @Parameter(required = false, readonly = true)
+    private boolean concision;
+
     @Parameter(required = true, readonly = true)
     private List<Database> databases;
 
@@ -121,6 +124,7 @@ public class GenerateOrmMojo extends AbstractMojo {
                 entityRequest.setTableNameUpperCamelCase(tableNameUpperCamelCase);
                 entityRequest.setTableColumnList(tableColumnList);
                 entityRequest.setTableStatisticsList(tableStatisticsList);
+                entityRequest.setConcision(concision);
 
                 String content = entityService.generate(entityRequest);
 
@@ -146,6 +150,7 @@ public class GenerateOrmMojo extends AbstractMojo {
                 entityFieldsRequest.setTableNameUpperCamelCase(tableNameUpperCamelCase);
                 entityFieldsRequest.setTableColumnList(tableColumnList);
                 entityFieldsRequest.setTableStatisticsList(tableStatisticsList);
+                entityFieldsRequest.setConcision(concision);
 
                 String content = entityFieldsService.generate(entityFieldsRequest);
 

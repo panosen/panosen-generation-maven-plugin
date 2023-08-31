@@ -1,6 +1,7 @@
 package com.panosen;
 
 import com.panosen.codedom.java.*;
+import com.panosen.codedom.java.engine.GenerateOptions;
 import com.panosen.dbschema.information_schema.Column;
 
 public class EntityFieldsService {
@@ -31,6 +32,8 @@ public class EntityFieldsService {
             }
         }
 
-        return codeFile.transformText();
+        GenerateOptions generateOptions = new GenerateOptions();
+        generateOptions.setConcision(request.isConcision());
+        return codeFile.transformText(generateOptions);
     }
 }
