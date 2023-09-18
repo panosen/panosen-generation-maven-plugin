@@ -5,7 +5,6 @@ import com.panosen.codedom.java.CodeClass;
 import com.panosen.codedom.java.CodeFile;
 import com.panosen.codedom.java.CodeProperty;
 import com.panosen.codedom.java.engine.GenerateOptions;
-import com.panosen.codedom.java.engine.JavaTypeConstant;
 import com.panosen.dbschema.information_schema.Column;
 
 public class EntityService {
@@ -61,19 +60,24 @@ public class EntityService {
     private String buildPropertyType(String dataType) {
         switch (dataType) {
             case "int":
-                return JavaTypeConstant._INTEGER;
+                return "Integer";
             case "bigint":
-                return JavaTypeConstant._LONG;
-            case "varchar":
-                return JavaTypeConstant.STRING;
+                return "Long";
             case "datetime":
                 return "Timestamp";
+
+            case "varchar":
+            case "text":
             case "mediumtext":
-                return JavaTypeConstant.STRING;
+                return "String";
+
             case "decimal":
                 return "BigDecimal";
             case "bit":
-                return JavaTypeConstant._BOOLEAN;
+                return "Boolean";
+            case "tinyint":
+                return "Integer";
+
             default:
                 return "error";
         }
@@ -85,18 +89,23 @@ public class EntityService {
                 return "Types.INTEGER";
             case "bigint":
                 return "Types.BIGINT";
-            case "varchar":
-                return "Types.VARCHAR";
             case "datetime":
                 return "Types.TIMESTAMP";
+
+            case "varchar":
+            case "text":
             case "mediumtext":
-                return "Types.VARCHAR";
+                return "Types.LONGVARCHAR";
+
             case "decimal":
                 return "Types.DECIMAL";
             case "bit":
                 return "Types.BIT";
+            case "tinyint":
+                return "Types.TINYINT";
+
             default:
-                return "";
+                return "error";
         }
     }
 }
