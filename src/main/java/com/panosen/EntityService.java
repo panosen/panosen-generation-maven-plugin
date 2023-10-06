@@ -67,6 +67,8 @@ public class EntityService {
                 return "Timestamp";
 
             case "varchar":
+                return "String";
+
             case "text":
             case "mediumtext":
                 return "String";
@@ -93,6 +95,8 @@ public class EntityService {
                 return "Types.TIMESTAMP";
 
             case "varchar":
+                return "Types.VARCHAR";
+
             case "text":
             case "mediumtext":
                 return "Types.LONGVARCHAR";

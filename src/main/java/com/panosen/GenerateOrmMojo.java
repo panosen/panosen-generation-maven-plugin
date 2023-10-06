@@ -62,6 +62,8 @@ public class GenerateOrmMojo extends AbstractMojo {
 
         Pack pack = new Pack();
         for (Database database : databases) {
+            getLog().info("database: " + database.getName());
+
             String dbPackageName = this.packageName + "." + database.getName();
             String dbPath = Paths.get(prefix, database.getName()).toString();
             handleDatabase(pack, dbPackageName, dbPath, database);
@@ -74,13 +76,31 @@ public class GenerateOrmMojo extends AbstractMojo {
 
         DataSource dataSource = buildDataSource(database);
 
-        List<Table> tableList = schemaRepository.getTables(dataSource, database.getName());
-        List<Column> columnList = schemaRepository.getColumns(dataSource, database.getName());
-        List<Statistics> statisticsList = schemaRepository.getStatistics(dataSource, database.getName());
+        int index = database.getUrl().lastIndexOf('/');
+        String schemaName = database.getUrl().substring(index + 1);
+        getLog().info("schemaName = " + schemaName);
+
+        List<Table> tableList = schemaRepository.getTables(dataSource, schemaName);
+        List<Column> columnList = schemaRepository.getColumns(dataSource, schemaName);
+        List<Statistics> statisticsList = schemaRepository.getStatistics(dataSource, schemaName);
 
         String entityPackageName = dbPackageName + ".entity";
 
+        getLog().info("tableList.size = " + tableList.size());
+
         for (Table table : tableList) {
+
+            if (database.getIncludes() != null && !database.getIncludes().isEmpty()) {
+                if (!database.getIncludes().contains(table.getTableName())) {
+                    continue;
+                }
+            }
+
+            if (database.getExcludes() != null && !database.getExcludes().isEmpty()) {
+                if (database.getExcludes().contains(table.getTableName())) {
+                    continue;
+                }
+            }
 
             String tableName = table.getTableName();
             String tableRealName = table.getTableName();

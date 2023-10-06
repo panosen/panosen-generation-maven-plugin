@@ -1,5 +1,7 @@
 package com.panosen;
 
+import java.util.List;
+
 public class Database {
 
     private String name;
@@ -11,6 +13,16 @@ public class Database {
     private String password;
 
     private String tablePrefix;
+
+    /**
+     * 包含的表
+     */
+    private List<String> includes;
+
+    /**
+     * 排除的表
+     */
+    private List<String> excludes;
 
     public String getName() {
         return name;
@@ -50,5 +62,21 @@ public class Database {
 
     public void setTablePrefix(String tablePrefix) {
         this.tablePrefix = tablePrefix;
+    }
+
+    public List<String> getIncludes() {
+        return includes;
+    }
+
+    public void setIncludes(List<String> includes) {
+        this.includes = includes;
+    }
+
+    public List<String> getExcludes() {
+        return excludes;
+    }
+
+    public void setExcludes(List<String> excludes) {
+        this.excludes = excludes;
     }
 }
