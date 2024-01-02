@@ -63,7 +63,9 @@ public class EntityService {
                 return "Integer";
             case "bigint":
                 return "Long";
+
             case "datetime":
+            case "timestamp":
                 return "Timestamp";
 
             case "varchar":
@@ -71,6 +73,7 @@ public class EntityService {
 
             case "text":
             case "mediumtext":
+            case "longtext":
                 return "String";
 
             case "decimal":
@@ -91,7 +94,9 @@ public class EntityService {
                 return "Types.INTEGER";
             case "bigint":
                 return "Types.BIGINT";
+
             case "datetime":
+            case "timestamp":
                 return "Types.TIMESTAMP";
 
             case "varchar":
@@ -99,6 +104,7 @@ public class EntityService {
 
             case "text":
             case "mediumtext":
+            case "longtext":
                 return "Types.LONGVARCHAR";
 
             case "decimal":
